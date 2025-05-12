@@ -6,8 +6,8 @@ import { messages } from 'src/common/constants/messages';
 import { LogModuleTypes } from 'src/common/enums/log-modules.enum';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Logger } from 'winston';
-import { PostSignupUserDto, UpdateUserDto, UserDetailsResponseDto } from './dto';
-import { AddressesRepository, RolesRepository, UsersRepository } from './repositories';
+import { PostSignupUserDto, UpdateUserDto, UserDetailsResponseDto } from '../dto';
+import { AddressesRepository, RolesRepository, UsersRepository } from '../repositories';
 
 @Injectable()
 export class UsersService {
