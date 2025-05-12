@@ -6,12 +6,19 @@ import { descriptions, messages } from '../../common/constants';
 import { AuthenticatedRequest } from '../authentication/interfaces';
 import { UpdateUserDto, UserDetailsResponseDto } from './dto';
 
-@UseGuards(JwtAuthGuard)
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
+    @Get('/test')
+    async testApi(): Promise<{ message: string }> {
+        return {
+            message: 'API Testing!',
+        };
+    }
+
+    @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
     @ApiOperation({
         description: descriptions.USER.GET_USER_DETAILS,

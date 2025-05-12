@@ -13,8 +13,8 @@ async function bootstrap(): Promise<void> {
     patchNestJsSwagger();
 
     const conf = new DocumentBuilder()
-        .setTitle('Landscape AI - API')
-        .setDescription('Landscape AI Platform API 1.0')
+        .setTitle('Nest Boilerplate - API')
+        .setDescription('Nest Boilerplate Platform API 1.0')
         .setVersion('0.1')
         .addBearerAuth({
             description: `Please enter token in following format: Bearer <JWT>`,

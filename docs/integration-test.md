@@ -1,6 +1,6 @@
-# Getting Started with Testing in Landscape AI
+# Getting Started with Testing in Nest Boilerplate
 
-Welcome to Landscape AI! This guide will help you quickly start writing and running tests for our project.
+Welcome to Nest Boilerplate! This guide will help you quickly start writing and running tests for our project.
 
 ## 1. **What You Need to Know**
 
