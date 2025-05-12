@@ -51,6 +51,10 @@ export class UsersRepository {
         });
     }
 
+    async fetchAll(): Promise<User[]> {
+        return this.prisma.user.findMany();
+    }
+
     async update(
         userId: number,
         userFields: Partial<User>,

@@ -43,6 +43,10 @@ export class UsersService {
         return user;
     }
 
+    async fetchAll() {
+        return this.usersRepository.fetchAll();
+    }
+
     async update(userId: number, updateUserDto: UpdateUserDto): Promise<void> {
         const { address, ...userFields } = updateUserDto;
         await this.getUserDetails(userId);
