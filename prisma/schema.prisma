@@ -1,0 +1,176 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "binary"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                        Int                        @id @default(autoincrement())
+  uuid                      String                     @unique @default(uuid())
+  email                     String                     @unique
+  cognitoId                 String                     @unique
+  firstName                 String?
+  lastName                  String?
+  phone                     String?
+  profileImg                String?
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime                   @updatedAt
+  userRoles                 UserRole[]
+  addresses                 Address?
+  AutoMask                  AutoMask[]
+  reImagineImageGenerations ReImagineImageGeneration[]
+
+  @@map("users")
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  userId    Int      @unique
+  name      String?
+  state     String
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("addresses")
+}
+
+model Role {
+  id              Int              @id @default(autoincrement())
+  uuid            String           @unique @default(uuid())
+  name            String
+  description     String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+
+  @@map("roles")
+}
+
+model UserRole {
+  userId Int
+  roleId Int
+  role   Role @relation(fields: [roleId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
+
+  @@id([userId, roleId]) // Composite primary key
+  @@map("user_role")
+}
+
+model RolePermission {
+  permissionId Int
+  roleId       Int
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  role         Role       @relation(fields: [roleId], references: [id])
+
+  @@id([permissionId, roleId]) // Composite primary key
+  @@map("role_permission")
+}
+
+model Permission {
+  id          Int              @id @default(autoincrement())
+  uuid        String           @unique @default(uuid())
+  name        String
+  description String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  roles       RolePermission[]
+
+  @@map("permissions")
+}
+
+model AutoMask {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  jobId     String   @unique
+  imageUrl  String
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("auto_mask")
+}
+
+model ReImagineImageGeneration {
+  id                Int                      @id @default(autoincrement())
+  uuid              String                   @unique @default(uuid())
+  jobId             String                   @unique
+  imageUrl          String
+  maskUrls          String[]
+  prompt            String
+  userId            Int
+  gardenStyleId     Int
+  yardTypeId        Int
+  status            ImageGenerationJobStatus @default(CREATED)
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  user              User                     @relation(fields: [userId], references: [id])
+  gardenStyle       GardenStyle              @relation(fields: [gardenStyleId], references: [id])
+  yardType          YardType                 @relation(fields: [yardTypeId], references: [id])
+  aiGeneratedImages AIGeneratedImages[]
+
+  @@map("re_imagine_image_generation")
+}
+
+enum ImageGenerationJobStatus {
+  CREATED
+  PROCESSING
+  POST_PROCESSING
+  DONE
+  ERROR
+}
+
+model YardType {
+  id                       Int                        @id @default(autoincrement())
+  uuid                     String                     @unique @default(uuid())
+  code                     String                     @unique
+  name                     String
+  updatedAt                DateTime                   @updatedAt
+  createdAt                DateTime                   @default(now())
+  ReImagineImageGeneration ReImagineImageGeneration[]
+
+  @@map("yard_types")
+}
+
+model AIGeneratedImages {
+  id                         Int                      @id @default(autoincrement())
+  uuid                       String                   @unique @default(uuid())
+  imageUrl                   String
+  favorite                   Boolean                  @default(false)
+  reImagineImageGenerationId Int
+  createdAt                  DateTime                 @default(now())
+  updatedAt                  DateTime                 @updatedAt
+  reImagineImageGeneration   ReImagineImageGeneration @relation(fields: [reImagineImageGenerationId], references: [id])
+
+  @@map("ai_generated_images")
+}
+
+model SeedHistory {
+  id         Int      @id @default(autoincrement())
+  uuid       String   @unique @default(uuid())
+  name       String   @unique
+  executedAt DateTime @default(now())
+
+  @@map("seed_history")
+}
+
+model GardenStyle {
+  id                       Int                        @id @default(autoincrement())
+  uuid                     String                     @unique @default(uuid())
+  name                     String                     @unique
+  description              String
+  imageUrl                 String
+  createdAt                DateTime                   @default(now())
+  updatedAt                DateTime                   @updatedAt
+  ReImagineImageGeneration ReImagineImageGeneration[]
+
+  @@map("garden_styles")
+}

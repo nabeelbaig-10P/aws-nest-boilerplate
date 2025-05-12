@@ -1,0 +1,26 @@
+services:
+  apiDB_test:
+    image: postgres:16.4-bookworm
+    restart: always
+    env_file:
+      - .env.test
+    environment:
+      - POSTGRES_DB=${PG_TEST_DATABASE}
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${PG_TEST_PASSWORD}
+    container_name: aws-nest-db-test
+    ports:
+      - '5433:5432'
+    networks:
+      - aws-nest
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "${PG_TEST_DATABASE}" ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+
+networks:
+  aws-nest:
+    name: aws-nest
+    driver: bridge

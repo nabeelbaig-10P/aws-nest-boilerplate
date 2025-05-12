@@ -1,0 +1,42 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aws-nest-api
+    env_file:
+      - .env
+    environment:
+      - PORT=80
+    ports:
+      - '80:80'
+    depends_on:
+      - apiDB
+    volumes:
+      - ./config/:/app/config
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+      - ~/.aws/:/root/.aws:ro # Mount AWS credentials, :ro flag ensures that the container has read-only access to these files
+    networks:
+      - aws-nest
+
+  apiDB:
+    image: postgres:16.4-bookworm
+    restart: always
+    environment:
+      - POSTGRES_DB=${PG_DATABASE}
+      - POSTGRES_PASSWORD=${PG_PASSWORD}
+    container_name: aws-nest-db
+    volumes:
+      - aws-nest-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - aws-nest
+
+volumes:
+  aws-nest-data: ~
+
+networks:
+  aws-nest:
+    driver: bridge
