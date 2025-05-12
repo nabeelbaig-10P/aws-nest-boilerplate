@@ -7,13 +7,7 @@ import configuration from '../config';
 import { CustomResponseMiddleware } from './common/middleware/response';
 import { winstonLogger } from './common/utils/winston-logger';
 import { PrismaModule } from './prisma/prisma.module';
-import {
-    AuthenticationModule,
-    GoogleMapsModule,
-    ReImagineModule,
-    UsersModule,
-    WebhookModule,
-} from './modules';
+import { AuthenticationModule, UsersModule, WebhookModule } from './modules';
 
 @Module({
     providers: [
@@ -36,8 +30,6 @@ import {
         UsersModule,
         WebhookModule,
         AuthenticationModule,
-        ReImagineModule,
-        GoogleMapsModule,
     ],
 })
 export class AppModule {

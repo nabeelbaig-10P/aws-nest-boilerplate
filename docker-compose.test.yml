@@ -6,7 +6,7 @@ services:
       - .env.test
     environment:
       - POSTGRES_DB=${PG_TEST_DATABASE}
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=${PG_TEST_USER}
       - POSTGRES_PASSWORD=${PG_TEST_PASSWORD}
     container_name: aws-nest-db-test
     ports:
