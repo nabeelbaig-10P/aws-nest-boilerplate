@@ -2,8 +2,8 @@ import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiKeyGuard } from 'src/modules/authentication/guards';
 import { messages } from 'src/common/constants/messages';
-import { PostSignupUserDto } from '../users/dto/post-signup.dto';
-import { UsersService } from '../users/users.service';
+import { PostSignupUserDto } from '../users/dto';
+import { UsersService } from '../users/services';
 
 @ApiTags('Webhooks')
 @Controller('webhook')
