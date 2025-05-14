@@ -11,10 +11,12 @@ import { UpdateUserDto, UserDetailsResponseDto } from './dto';
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Get('/test')
-    async testApi(): Promise<{ message: string }> {
+    @Get('/all')
+    async fetchAll() {
+        const users = await this.usersService.fetchAll();
         return {
-            message: 'API Testing!',
+            message: messages.DATA_FETCHED_SUCCESS,
+            data: users,
         };
     }
 
